@@ -101,12 +101,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy-dep</artifactId>
-            <version>1.17.0</version>
-        </dependency>
-
         <!-- Database connectivity -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>

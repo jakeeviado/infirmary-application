@@ -42,8 +42,8 @@ plugins:
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
         git push origin release-${nextRelease.version} &&
-        gh pr create --title "Release ${nextRelease.version}" --body "Automated release for version ${nextRelease.version}" --base master
+        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}" --base master
   - - "@semantic-release/github"
     - assets:
-        - path: "target/package/"
+        - path: "target/package"
           label: "Windows Distribution"

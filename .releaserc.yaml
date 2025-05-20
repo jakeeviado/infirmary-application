@@ -56,10 +56,6 @@ plugins:
           git push origin $RELEASE_BRANCH &&
           gh pr create --title "Release ${nextRelease.version}" --body "Automated release for version ${nextRelease.version}" --base master;
         fi
-git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
-  git push origin $RELEASE_BRANCH &&
-  gh pr create --title "Release ${nextRelease.version}" --body "Automated release for version ${nextRelease.version}" --base master;
-  fi
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"

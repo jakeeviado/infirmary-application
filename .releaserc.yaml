@@ -38,11 +38,24 @@ plugins:
       changelogTitle: "# Changelogs"
   - - "@semantic-release/exec"
     - prepareCmd: >
-        git checkout -b release-${nextRelease.version} &&
-        git add pom.xml CHANGELOG.md &&
-        git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
-        git push origin release-${nextRelease.version} &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}" --base master
+        set -e;
+        RELEASE_BRANCH=release-v${nextRelease.version};
+        if git ls-remote --heads origin $RELEASE_BRANCH | grep -q $RELEASE_BRANCH; then
+          git fetch origin $RELEASE_BRANCH &&
+          git checkout $RELEASE_BRANCH &&
+          git merge origin/master --no-edit &&
+          mvn versions:set -DnewVersion=${nextRelease.version} &&
+          npx semantic-release --no-ci &&
+          git add pom.xml CHANGELOG.md build.env &&
+          git commit --amend --no-edit &&
+          git push origin $RELEASE_BRANCH --force;
+        else
+          git checkout -b $RELEASE_BRANCH &&
+          git add pom.xml CHANGELOG.md build.env &&
+          git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
+          git push origin $RELEASE_BRANCH &&
+          gh pr create --title "Release ${nextRelease.version}" --body "Automated release for version ${nextRelease.version}" --base master;
+        fi
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
